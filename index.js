@@ -1,9 +1,11 @@
 const fs = require('fs-extra')
 const prompt = require('prompt-sync')();
+const path = require('path')
 
-const id = 123;
+var startId = 123;
 const keyWork = '流调';
-const destDir = "./tmp/";
+const srcDir = '.' + path.sep;
+const destDir = '.' + path.sep + 'tmp' + path.sep;
 
 var match = function(filename) {
     if (filename.indexOf(keyWork) !== -1) {
@@ -14,11 +16,11 @@ var match = function(filename) {
 
 var rename = function(filename) {
     let index = filename.indexOf(keyWork) + keyWork.length;
-    return filename.slice(0, index) + id + filename.slice(index, -1);
+    return filename.slice(0, index) + startId++ + filename.slice(index, -1);
 }
 
-fs.readdir('./', function(err, files) {
-    if (id === 0) {
+fs.readdir(srcDir, function(err, files) {
+    if (startId === 0) {
         return;
     }
     
@@ -28,12 +30,12 @@ fs.readdir('./', function(err, files) {
 
     for (index in files) {
         let filename = files[index];
-        fs.stat('./' + filename, (err, stats) => {
+        fs.stat(srcDir + filename, (err, stats) => {
             if (stats.isDirectory() && match(filename)) {
                 let newFilename = rename(filename);
                 const choice = prompt(filename + ' will be rename to ' + newFilename + ' : y/n ');
                 if (choice === 'y') {
-                    fs.copy(filename, destDir + "/" + newFilename);
+                    fs.copy(srcDir + path.sep + filename, destDir + path.sep + newFilename);
                 }
             }
         })
