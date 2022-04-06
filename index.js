@@ -16,10 +16,11 @@ var match = function(filename) {
 
 var rename = function(filename) {
     let index = filename.indexOf(keyWork) + keyWork.length;
+    let length = filename.length;
     if (filename[index] === '-') {
-        filename = filename.slice(0, index) + ' ' + filename.slice(index + 1, -1);
+        filename = filename.slice(0, index) + ' ' + filename.slice(index + 1, length);
     }
-    return filename.slice(0, index) + startId++ + filename.slice(index, -1);
+    return filename.slice(0, index) + startId++ + filename.slice(index, length);
 }
 
 fs.readdir(srcDir, function(err, files) {
