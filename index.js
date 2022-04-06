@@ -37,7 +37,7 @@ fs.readdir(srcDir, function(err, files) {
                 let newFilename = rename(filename);
                 let choice = '';
                 while (choice === '') {
-                    prompt(filename + ' will be rename to ' + newFilename + ' : y/n ');
+                    choice = prompt(filename + ' will be rename to ' + newFilename + ' : y/n ');
                     if (choice === 'y') {
                         fs.copy(srcDir + path.sep + filename, destDir + path.sep + newFilename);
                         break;
