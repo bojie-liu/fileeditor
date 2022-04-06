@@ -17,7 +17,7 @@ var match = function(filename) {
 var rename = function(filename) {
     let index = filename.indexOf(keyWork) + keyWork.length;
     if (filename[index] === '-') {
-        filename = filename.slice(0, index) + filename.slice(index + 1, -1);
+        filename = filename.slice(0, index) + ' ' + filename.slice(index + 1, -1);
     }
     return filename.slice(0, index) + startId++ + filename.slice(index, -1);
 }
