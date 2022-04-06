@@ -2,7 +2,7 @@ const fs = require('fs-extra')
 const prompt = require('prompt-sync')();
 const path = require('path')
 
-var startId = 123;
+var startId = 1232142141;
 const keyWork = '流调';
 const srcDir = '.' + path.sep;
 const destDir = '.' + path.sep + 'tmp' + path.sep;
@@ -20,7 +20,7 @@ var rename = function(filename) {
     if (filename[index] === '-') {
         filename = filename.slice(0, index) + ' ' + filename.slice(index + 1, length);
     }
-    return filename.slice(0, index) + startId++ + filename.slice(index, length);
+    return filename.slice(0, index) + (startId++) + filename.slice(index, length);
 }
 
 fs.readdir(srcDir, function(err, files) {
@@ -38,7 +38,7 @@ fs.readdir(srcDir, function(err, files) {
                 let newFilename = rename(filename);
                 let choice = '';
                 while (choice === '') {
-                    choice = prompt(filename + ' will be rename to ' + newFilename + ' : y/n ');
+                    choice = 'y'; //prompt(filename + ' will be rename to ' + newFilename + ' : y/n ');
                     if (choice === 'y') {
                         fs.copy(srcDir + path.sep + filename, destDir + path.sep + newFilename);
                         break;
