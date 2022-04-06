@@ -16,6 +16,9 @@ var match = function(filename) {
 
 var rename = function(filename) {
     let index = filename.indexOf(keyWork) + keyWork.length;
+    if (filename[index] === '-') {
+        filename = filename.slice(0, index) + filename.slice(index + 1, -1);
+    }
     return filename.slice(0, index) + startId++ + filename.slice(index, -1);
 }
 
@@ -24,18 +27,23 @@ fs.readdir(srcDir, function(err, files) {
         return;
     }
     
-    if (!fs.existsSync(destDir)) {
-        fs.mkdirSync(destDir);
-    }
+    fs.removeSync(destDir);
+    fs.mkdirSync(destDir);
 
     for (index in files) {
         let filename = files[index];
         fs.stat(srcDir + filename, (err, stats) => {
-            if (stats.isDirectory() && match(filename)) {
+            if (match(filename)) {
                 let newFilename = rename(filename);
-                const choice = prompt(filename + ' will be rename to ' + newFilename + ' : y/n ');
-                if (choice === 'y') {
-                    fs.copy(srcDir + path.sep + filename, destDir + path.sep + newFilename);
+                let choice = '';
+                while (choice === '') {
+                    prompt(filename + ' will be rename to ' + newFilename + ' : y/n ');
+                    if (choice === 'y') {
+                        fs.copy(srcDir + path.sep + filename, destDir + path.sep + newFilename);
+                        break;
+                    } else if (choice === 'n') {
+                        break;
+                    }
                 }
             }
         })
